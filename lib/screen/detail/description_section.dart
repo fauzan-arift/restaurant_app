@@ -41,7 +41,7 @@ class _DescriptionContent extends StatelessWidget {
                   description,
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.justify,
-                  maxLines: provider.isExpanded ? null : 3,
+                  maxLines: provider.isExpanded ? null : 5,
                   overflow: provider.isExpanded
                       ? TextOverflow.visible
                       : TextOverflow.ellipsis,

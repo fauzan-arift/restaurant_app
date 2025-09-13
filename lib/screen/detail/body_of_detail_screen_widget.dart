@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/data/model/restaurant.dart';
 import 'package:restaurant_app/data/model/restaurant_detail.dart';
+import 'package:restaurant_app/provider/favorite/favorite_provider.dart';
+import 'package:restaurant_app/provider/favorite/favorite_state_provider.dart';
 import 'package:restaurant_app/screen/detail/chip_list_section.dart';
 import 'package:restaurant_app/screen/detail/description_section.dart';
 import 'package:restaurant_app/screen/detail/restaurant_image.dart';
@@ -13,52 +17,84 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RestaurantImage(pictureId: restaurant.pictureId),
-          const SizedBox(height: 16),
-          RestaurantInfo(
-            name: restaurant.name,
-            city: restaurant.city,
-            address: restaurant.address,
-            rating: restaurant.rating,
+    return Consumer<FavoriteStateProvider>(
+      builder: (context, favoriteStateProvider, _) {
+        final isFavorite = favoriteStateProvider.isFavorite(restaurant.id);
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RestaurantImage(pictureId: restaurant.pictureId),
+              const SizedBox(height: 8),
+              RestaurantInfo(
+                name: restaurant.name,
+                city: restaurant.city,
+                address: restaurant.address,
+                rating: restaurant.rating,
+                isFavorite: isFavorite,
+                onFavoriteToggle: () {
+                  final simpleRestaurant = Restaurant(
+                    id: restaurant.id,
+                    name: restaurant.name,
+                    description: restaurant.description,
+                    pictureId: restaurant.pictureId,
+                    city: restaurant.city,
+                    rating: restaurant.rating,
+                  );
+
+                  favoriteStateProvider.toggleFavorite(simpleRestaurant);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        isFavorite
+                            ? 'Berhasil menghapus dari favorit'
+                            : 'Berhasil menambahkan ke favorit',
+                      ),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
+
+                  context.read<FavoriteProvider>().refreshFavorites();
+                },
+              ),
+              const SizedBox(height: 16),
+              if (restaurant.categories.isNotEmpty)
+                ChipListSection(
+                  title: 'Kategori',
+                  items: restaurant.categories,
+                  iconBuilder: (_) => Icons.local_offer,
+                  colorBuilder: (_) => Colors.orange,
+                  labelBuilder: (item) => item.name,
+                ),
+              DescriptionSection(description: restaurant.description),
+              const SizedBox(height: 16),
+              if (restaurant.menus.foods.isNotEmpty)
+                ChipListSection(
+                  title: 'Menu Makanan',
+                  items: restaurant.menus.foods,
+                  iconBuilder: (_) => Icons.restaurant_menu,
+                  colorBuilder: (_) => Colors.blue,
+                  labelBuilder: (item) => item.name,
+                ),
+              if (restaurant.menus.drinks.isNotEmpty)
+                ChipListSection(
+                  title: 'Menu Minuman',
+                  items: restaurant.menus.drinks,
+                  iconBuilder: (_) => Icons.local_drink,
+                  colorBuilder: (_) => Colors.green,
+                  labelBuilder: (item) => item.name,
+                ),
+              ReviewSection(
+                reviews: restaurant.customerReviews,
+                restaurantId: restaurant.id,
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          if (restaurant.categories.isNotEmpty)
-            ChipListSection(
-              title: 'Kategori',
-              items: restaurant.categories,
-              iconBuilder: (_) => Icons.local_offer,
-              colorBuilder: (_) => Colors.orange,
-              labelBuilder: (item) => item.name,
-            ),
-          DescriptionSection(description: restaurant.description),
-          const SizedBox(height: 16),
-          if (restaurant.menus.foods.isNotEmpty)
-            ChipListSection(
-              title: 'Menu Makanan',
-              items: restaurant.menus.foods,
-              iconBuilder: (_) => Icons.restaurant_menu,
-              colorBuilder: (_) => Colors.blue,
-              labelBuilder: (item) => item.name,
-            ),
-          if (restaurant.menus.drinks.isNotEmpty)
-            ChipListSection(
-              title: 'Menu Minuman',
-              items: restaurant.menus.drinks,
-              iconBuilder: (_) => Icons.local_drink,
-              colorBuilder: (_) => Colors.green,
-              labelBuilder: (item) => item.name,
-            ),
-          ReviewSection(
-            reviews: restaurant.customerReviews,
-            restaurantId: restaurant.id,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

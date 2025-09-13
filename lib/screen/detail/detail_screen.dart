@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/detail/restaurant_detail_provider.dart';
+import 'package:restaurant_app/provider/favorite/favorite_state_provider.dart';
 import 'package:restaurant_app/screen/detail/body_of_detail_screen_widget.dart';
 import 'package:restaurant_app/screen/error/error_state_widget.dart';
 import 'package:restaurant_app/static/restaurant_detail_result.dart';
@@ -25,6 +26,10 @@ class _DetailScreenState extends State<DetailScreen> {
       context.read<RestaurantDetailProvider>().fetchRestaurantDetail(
         widget.restaurantId,
       );
+
+      context.read<FavoriteStateProvider>().checkFavoriteStatus(
+        widget.restaurantId,
+      );
     });
   }
 
@@ -33,8 +38,8 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Detail Restoran")),
       body: Consumer<RestaurantDetailProvider>(
-        builder: (context, value, child) {
-          final state = value.state;
+        builder: (context, provider, child) {
+          final state = provider.state;
           if (state is RestaurantDetailLoadingState) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -45,13 +50,35 @@ class _DetailScreenState extends State<DetailScreen> {
             return ErrorStateWidget(
               message: ErrorMessageHelper.getErrorMessage(state.message),
               onRetry: () {
-                value.fetchRestaurantDetail(widget.restaurantId);
+                provider.fetchRestaurantDetail(widget.restaurantId);
               },
             );
           }
           return const SizedBox();
         },
       ),
+    );
+  }
+}
+
+class FavoriteButton extends StatelessWidget {
+  final bool isFavorite;
+  final VoidCallback onPressed;
+
+  const FavoriteButton({
+    super.key,
+    required this.isFavorite,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        isFavorite ? Icons.favorite : Icons.favorite_border,
+        color: isFavorite ? Colors.red : null,
+      ),
+      onPressed: onPressed,
     );
   }
 }
