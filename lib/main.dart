@@ -7,17 +7,37 @@ import 'package:restaurant_app/provider/favorite/favorite_provider.dart';
 import 'package:restaurant_app/provider/favorite/favorite_state_provider.dart';
 import 'package:restaurant_app/provider/navigation_provider.dart';
 import 'package:restaurant_app/provider/theme/theme_provider.dart';
+import 'package:restaurant_app/provider/reminder/reminder_provider.dart';
 import 'package:restaurant_app/screen/detail/detail_screen.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/main_container.dart';
 import 'package:restaurant_app/screen/settings/settings_screen.dart';
 import 'package:restaurant_app/style/theme/restaurant_theme.dart';
+import 'package:restaurant_app/notif/notification_service.dart';
+import 'package:restaurant_app/notif/background_service.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/home/restaurant_list_provider.dart';
 import 'package:restaurant_app/static/navigation_route.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await NotificationService().initialize();
+  await BackgroundService.initialize();
+
+  final notificationService = NotificationService();
+  final notificationAppLaunchDetails = await notificationService
+      .getNotificationAppLaunchDetails();
+
+  String? launchPayload;
+
+  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    final notificationResponse =
+        notificationAppLaunchDetails!.notificationResponse;
+    if (notificationResponse?.payload != null) {
+      launchPayload = notificationResponse!.payload;
+    }
+  }
 
   runApp(
     MultiProvider(
@@ -47,14 +67,20 @@ void main() {
         ),
         ChangeNotifierProvider(create: (context) => NavigationProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => ReminderProvider()),
       ],
-      child: const MainApp(),
+      child: MainApp(launchPayload: launchPayload),
     ),
   );
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final String? launchPayload;
+
+  const MainApp({super.key, this.launchPayload});
+
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -62,17 +88,21 @@ class MainApp extends StatelessWidget {
       builder: (context, themeProvider, child) {
         return MaterialApp(
           title: 'Restaurant App',
+          navigatorKey: navigatorKey,
           theme: RestaurantTheme.lightTheme,
           darkTheme: RestaurantTheme.darkTheme,
           themeMode: themeProvider.themeMode,
           initialRoute: NavigationRoute.mainRoute.name,
           routes: {
-            NavigationRoute.mainRoute.name: (context) => const MainContainer(),
+            NavigationRoute.mainRoute.name: (context) {
+              return MainContainer(launchPayload: launchPayload);
+            },
             NavigationRoute.detailRoute.name: (context) {
+              // Normal navigation with arguments
               final args =
                   ModalRoute.of(context)?.settings.arguments
-                      as Map<String, String>;
-              final restaurantId = args['id'] ?? '';
+                      as Map<String, String>?;
+              final restaurantId = args?['id'] ?? '';
               return DetailScreen(restaurantId: restaurantId);
             },
             NavigationRoute.favoriteRoute.name: (context) =>
