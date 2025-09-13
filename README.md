@@ -47,4 +47,4 @@ Proyek ini merupakan bagian dari submission dengan tujuan membangun aplikasi daf
 - **Provider** (state management)
 - **HTTP** (pemanggilan API)
 - **Lottie / Rive** (opsional untuk animasi loading)
-- **Google Fonts** (opsional untuk kustomisasi font)
+- **Google Fonts** (kustomisasi font)
