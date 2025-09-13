@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class RestaurantTextStyle {
   /// displayLarge Text Style
-  static TextStyle displayLarge = GoogleFonts.roboto(
+  static TextStyle displayLarge = GoogleFonts.poppins(
     fontSize: 57,
     fontWeight: FontWeight.w700,
     height: 1.11,
@@ -11,7 +11,7 @@ class RestaurantTextStyle {
   );
 
   /// displayMedium Text Style
-  static TextStyle displayMedium = GoogleFonts.roboto(
+  static TextStyle displayMedium = GoogleFonts.poppins(
     fontSize: 45,
     fontWeight: FontWeight.w600,
     height: 1.17,
@@ -19,7 +19,7 @@ class RestaurantTextStyle {
   );
 
   /// displaySmall Text Style
-  static TextStyle displaySmall = GoogleFonts.roboto(
+  static TextStyle displaySmall = GoogleFonts.poppins(
     fontSize: 36,
     fontWeight: FontWeight.w500,
     height: 1.25,
@@ -27,7 +27,7 @@ class RestaurantTextStyle {
   );
 
   /// headlineLarge Text Style
-  static TextStyle headlineLarge = GoogleFonts.roboto(
+  static TextStyle headlineLarge = GoogleFonts.poppins(
     fontSize: 32,
     fontWeight: FontWeight.w600,
     height: 1.5,
@@ -35,7 +35,7 @@ class RestaurantTextStyle {
   );
 
   /// headlineMedium Text Style
-  static TextStyle headlineMedium = GoogleFonts.roboto(
+  static TextStyle headlineMedium = GoogleFonts.poppins(
     fontSize: 28,
     fontWeight: FontWeight.w500,
     height: 1.2,
@@ -43,7 +43,7 @@ class RestaurantTextStyle {
   );
 
   /// headlineSmall Text Style
-  static TextStyle headlineSmall = GoogleFonts.roboto(
+  static TextStyle headlineSmall = GoogleFonts.poppins(
     fontSize: 24,
     fontWeight: FontWeight.w400,
     height: 1.0,
@@ -51,7 +51,7 @@ class RestaurantTextStyle {
   );
 
   /// titleLarge Text Style
-  static TextStyle titleLarge = GoogleFonts.roboto(
+  static TextStyle titleLarge = GoogleFonts.poppins(
     fontSize: 22,
     fontWeight: FontWeight.w500,
     height: 1.2,
@@ -59,7 +59,7 @@ class RestaurantTextStyle {
   );
 
   /// titleMedium Text Style
-  static TextStyle titleMedium = GoogleFonts.roboto(
+  static TextStyle titleMedium = GoogleFonts.poppins(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     height: 1.2,
@@ -67,7 +67,7 @@ class RestaurantTextStyle {
   );
 
   /// titleSmall Text Style
-  static TextStyle titleSmall = GoogleFonts.roboto(
+  static TextStyle titleSmall = GoogleFonts.poppins(
     fontSize: 14,
     fontWeight: FontWeight.w300,
     height: 1.2,
@@ -75,28 +75,28 @@ class RestaurantTextStyle {
   );
 
   /// bodyLargeBold Text Style
-  static TextStyle bodyLargeBold = GoogleFonts.roboto(
+  static TextStyle bodyLargeBold = GoogleFonts.poppins(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     height: 1.56,
   );
 
   /// bodyLargeMedium Text Style
-  static TextStyle bodyLargeMedium = GoogleFonts.roboto(
+  static TextStyle bodyLargeMedium = GoogleFonts.poppins(
     fontSize: 14,
     fontWeight: FontWeight.w300,
     height: 1.56,
   );
 
   /// bodyLargeRegular Text Style
-  static TextStyle bodyLargeRegular = GoogleFonts.roboto(
+  static TextStyle bodyLargeRegular = GoogleFonts.poppins(
     fontSize: 12,
     fontWeight: FontWeight.w200,
     height: 1.56,
   );
 
   /// labelLarge Text Style
-  static TextStyle labelLarge = GoogleFonts.roboto(
+  static TextStyle labelLarge = GoogleFonts.poppins(
     fontSize: 14,
     fontWeight: FontWeight.w300,
     height: 1.71,
@@ -104,7 +104,7 @@ class RestaurantTextStyle {
   );
 
   /// labelMedium Text Style
-  static TextStyle labelMedium = GoogleFonts.roboto(
+  static TextStyle labelMedium = GoogleFonts.poppins(
     fontSize: 12,
     fontWeight: FontWeight.w200,
     height: 1.4,
@@ -112,7 +112,7 @@ class RestaurantTextStyle {
   );
 
   /// labelSmall Text Style
-  static TextStyle labelSmall = GoogleFonts.roboto(
+  static TextStyle labelSmall = GoogleFonts.poppins(
     fontSize: 11,
     fontWeight: FontWeight.w100,
     height: 1.2,
