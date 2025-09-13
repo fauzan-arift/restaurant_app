@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/data/local/shared_preferences_service.dart';
+import 'package:restaurant_app/data/local/theme_shared_preferences_service.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
 
-  SharedPreferencesService? _prefsService;
+  ThemeSharedPreferencesService? _prefsService;
 
   ThemeMode get themeMode => _themeMode;
 
@@ -17,7 +17,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   Future<void> _loadThemePreference() async {
-    _prefsService = await SharedPreferencesService.instance;
+    _prefsService = await ThemeSharedPreferencesService.instance;
 
     final savedThemeMode = _prefsService?.getThemePreference();
 
@@ -35,7 +35,6 @@ class ThemeProvider extends ChangeNotifier {
 
     await _prefsService?.setThemePreference(_getStringFromThemeMode(mode));
   }
-
 
   Future<void> useSystemTheme() async {
     await setThemeMode(ThemeMode.system);
