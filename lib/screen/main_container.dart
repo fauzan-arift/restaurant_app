@@ -1,12 +1,71 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/notif/notification_service.dart';
 import 'package:restaurant_app/provider/navigation_provider.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/home/home_screen.dart';
 import 'package:restaurant_app/screen/settings/settings_screen.dart';
+import 'package:restaurant_app/static/navigation_route.dart';
 
-class MainContainer extends StatelessWidget {
-  const MainContainer({super.key});
+class MainContainer extends StatefulWidget {
+  final String? launchPayload;
+
+  const MainContainer({super.key, this.launchPayload});
+
+  @override
+  State<MainContainer> createState() => _MainContainerState();
+}
+
+class _MainContainerState extends State<MainContainer> {
+  late final NotificationService _notificationService;
+  StreamSubscription<String?>? _notificationSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationService = NotificationService();
+    _configureSelectNotificationSubject();
+
+    // Handle cold start navigation from notification
+    if (widget.launchPayload != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _handleNotificationPayload(widget.launchPayload!);
+      });
+    }
+  }
+
+  void _configureSelectNotificationSubject() {
+    _notificationSubscription = _notificationService.selectNotificationStream
+        .listen((String? payload) {
+          if (payload != null && mounted) {
+            _handleNotificationPayload(payload);
+          }
+        });
+  }
+
+  void _handleNotificationPayload(String payload) {
+    try {
+      final data = jsonDecode(payload);
+      final restaurantId = data['id'] as String?;
+      if (restaurantId != null) {
+        Navigator.pushNamed(
+          context,
+          NavigationRoute.detailRoute.name,
+          arguments: {'id': restaurantId},
+        );
+      }
+    } catch (e) {
+      debugPrint('Error parsing notification payload: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _notificationSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
