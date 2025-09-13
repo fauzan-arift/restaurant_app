@@ -74,4 +74,3 @@ class ChipListSection extends StatelessWidget {
     );
   }
 }
-
