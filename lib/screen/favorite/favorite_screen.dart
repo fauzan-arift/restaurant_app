@@ -52,7 +52,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               NavigationRoute.detailRoute.name,
                               arguments: {'id': restaurant.id},
                             ).then((_) {
-                              // Refresh favorites when returning from detail screen
                               provider.refreshFavorites();
                             });
                           },

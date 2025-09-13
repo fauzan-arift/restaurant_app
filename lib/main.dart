@@ -6,15 +6,19 @@ import 'package:restaurant_app/provider/detail/restaurant_detail_provider.dart';
 import 'package:restaurant_app/provider/favorite/favorite_provider.dart';
 import 'package:restaurant_app/provider/favorite/favorite_state_provider.dart';
 import 'package:restaurant_app/provider/navigation_provider.dart';
+import 'package:restaurant_app/provider/theme/theme_provider.dart';
 import 'package:restaurant_app/screen/detail/detail_screen.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/main_container.dart';
+import 'package:restaurant_app/screen/settings/settings_screen.dart';
 import 'package:restaurant_app/style/theme/restaurant_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/home/restaurant_list_provider.dart';
 import 'package:restaurant_app/static/navigation_route.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MultiProvider(
       providers: [
@@ -42,6 +46,7 @@ void main() {
           ),
         ),
         ChangeNotifierProvider(create: (context) => NavigationProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
       child: const MainApp(),
     ),
@@ -53,21 +58,29 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Restaurant App',
-      theme: RestaurantTheme.lightTheme,
-      darkTheme: RestaurantTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      initialRoute: NavigationRoute.mainRoute.name,
-      routes: {
-        NavigationRoute.mainRoute.name: (context) => const MainContainer(),
-        NavigationRoute.detailRoute.name: (context) {
-          final args =
-              ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-          final restaurantId = args['id'] ?? '';
-          return DetailScreen(restaurantId: restaurantId);
-        },
-        NavigationRoute.favoriteRoute.name: (context) => const FavoriteScreen(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          title: 'Restaurant App',
+          theme: RestaurantTheme.lightTheme,
+          darkTheme: RestaurantTheme.darkTheme,
+          themeMode: themeProvider.themeMode,
+          initialRoute: NavigationRoute.mainRoute.name,
+          routes: {
+            NavigationRoute.mainRoute.name: (context) => const MainContainer(),
+            NavigationRoute.detailRoute.name: (context) {
+              final args =
+                  ModalRoute.of(context)?.settings.arguments
+                      as Map<String, String>;
+              final restaurantId = args['id'] ?? '';
+              return DetailScreen(restaurantId: restaurantId);
+            },
+            NavigationRoute.favoriteRoute.name: (context) =>
+                const FavoriteScreen(),
+            NavigationRoute.settingsRoute.name: (context) =>
+                const SettingsScreen(),
+          },
+        );
       },
     );
   }

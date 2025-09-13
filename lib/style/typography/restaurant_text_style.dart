@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RestaurantTextStyle {
-  /// displayLarge Text Style
   static TextStyle displayLarge = GoogleFonts.poppins(
     fontSize: 57,
     fontWeight: FontWeight.w700,
@@ -10,7 +9,6 @@ class RestaurantTextStyle {
     letterSpacing: -2,
   );
 
-  /// displayMedium Text Style
   static TextStyle displayMedium = GoogleFonts.poppins(
     fontSize: 45,
     fontWeight: FontWeight.w600,
@@ -18,7 +16,6 @@ class RestaurantTextStyle {
     letterSpacing: -1,
   );
 
-  /// displaySmall Text Style
   static TextStyle displaySmall = GoogleFonts.poppins(
     fontSize: 36,
     fontWeight: FontWeight.w500,

@@ -64,7 +64,9 @@ class SearchBarWidget extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Material(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.lightBlueAccent
+                : Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(12),
             child: InkWell(
               borderRadius: BorderRadius.circular(12),

@@ -8,7 +8,6 @@ class DescriptionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Membuat instance provider lokal untuk widget ini
     return ChangeNotifierProvider(
       create: (context) => DescriptionProvider(),
       child: _DescriptionContent(description: description),

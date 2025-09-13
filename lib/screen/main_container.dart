@@ -1,17 +1,20 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/navigation_provider.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/home/home_screen.dart';
+import 'package:restaurant_app/screen/settings/settings_screen.dart';
 
 class MainContainer extends StatelessWidget {
   const MainContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> screens = [const HomeScreen(), const FavoriteScreen()];
+    final List<Widget> screens = [
+      const HomeScreen(),
+      const FavoriteScreen(),
+      const SettingsScreen(),
+    ];
 
     return Consumer<NavigationProvider>(
       builder: (context, navigationProvider, child) {
@@ -38,7 +41,9 @@ class MainContainer extends StatelessWidget {
                     icon: Icon(
                       Icons.restaurant_menu,
                       color: navigationProvider.currentIndex == 0
-                          ? Theme.of(context).primaryColor
+                          ? Theme.of(context).brightness == Brightness.dark
+                                ? Colors.lightBlueAccent
+                                : Theme.of(context).primaryColor
                           : Colors.grey,
                     ),
                     label: 'Restoran',
@@ -48,15 +53,32 @@ class MainContainer extends StatelessWidget {
                     icon: Icon(
                       Icons.favorite,
                       color: navigationProvider.currentIndex == 1
-                          ? Theme.of(context).primaryColor
+                          ? Theme.of(context).brightness == Brightness.dark
+                                ? Colors.lightBlueAccent
+                                : Theme.of(context).primaryColor
                           : Colors.grey,
                     ),
                     label: 'Favorit',
                     backgroundColor: Theme.of(context).cardColor,
                   ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.settings,
+                      color: navigationProvider.currentIndex == 2
+                          ? Theme.of(context).brightness == Brightness.dark
+                                ? Colors.lightBlueAccent
+                                : Theme.of(context).primaryColor
+                          : Colors.grey,
+                    ),
+                    label: 'Pengaturan',
+                    backgroundColor: Theme.of(context).cardColor,
+                  ),
                 ],
                 currentIndex: navigationProvider.currentIndex,
-                selectedItemColor: Theme.of(context).primaryColor,
+                selectedItemColor:
+                    Theme.of(context).brightness == Brightness.dark
+                    ? Colors.lightBlueAccent
+                    : Theme.of(context).primaryColor,
                 unselectedItemColor: Colors.grey,
                 selectedLabelStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
