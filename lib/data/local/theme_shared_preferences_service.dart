@@ -1,21 +1,21 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesService {
+class ThemeSharedPreferencesService {
   final SharedPreferences _preferences;
 
   static const String _keyThemeMode = "THEME_MODE";
 
-  static SharedPreferencesService? _instance;
+  static ThemeSharedPreferencesService? _instance;
 
-  static Future<SharedPreferencesService> get instance async {
+  static Future<ThemeSharedPreferencesService> get instance async {
     if (_instance == null) {
       final prefs = await SharedPreferences.getInstance();
-      _instance = SharedPreferencesService._(prefs);
+      _instance = ThemeSharedPreferencesService._(prefs);
     }
     return _instance!;
   }
 
-  SharedPreferencesService._(this._preferences);
+  ThemeSharedPreferencesService._(this._preferences);
 
   String? getThemePreference() {
     return _preferences.getString(_keyThemeMode);
