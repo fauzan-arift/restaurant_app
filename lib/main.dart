@@ -98,7 +98,6 @@ class MainApp extends StatelessWidget {
               return MainContainer(launchPayload: launchPayload);
             },
             NavigationRoute.detailRoute.name: (context) {
-              // Normal navigation with arguments
               final args =
                   ModalRoute.of(context)?.settings.arguments
                       as Map<String, String>?;
